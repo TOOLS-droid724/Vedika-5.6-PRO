@@ -1,4 +1,4 @@
-"""Vedika K3 XTML encoding helpers.
+"""Vedika Advanced AI 5.6 Pro XTML encoding helpers.
 
 This module keeps chat rendering in Python.
 Callers that need token IDs should consume ``EncodeSegment`` objects directly:
@@ -299,7 +299,7 @@ def normalize_tool_arguments(
         except ValueError:
             return [], arguments
     raise TypeError(
-        "Vedika K3 tool call arguments must be a dict or a JSON object string."
+        "Vedika Advanced AI 5.6 Pro tool call arguments must be a dict or a JSON object string."
     )
 
 
@@ -387,13 +387,13 @@ def _tool_call_id_index(tool_calls: Any) -> dict:
 
 
 def normalize_xtml_tool_result_messages(messages: list[Any]) -> list[Any]:
-    """Re-sort K3 XTML tool results into assistant ``tool_calls`` order.
+    """Re-sort XTML tool results into assistant ``tool_calls`` order.
 
     Serving frameworks generally deliver tool results already in call order. A
     direct Transformers caller, however, may pass OpenAI-style tool messages in any
     order, so each run of consecutive tool messages is matched against the most
     recent preceding assistant ``tool_calls`` by opaque ``tool_call_id`` ==
-    ``tool_calls[].id`` (K3 drops the ``func:index`` format requirement) and
+    ``tool_calls[].id`` (Vedika drops the ``func:index`` format requirement) and
     sorted by the matched 1-based position. The matched call is authoritative,
     so each matched message's ``tool`` is set to that call's function name --
     this keeps an explicit (and possibly stale) ``tool``/``name`` from drifting
@@ -636,7 +636,7 @@ def build_chat_segments(
         # Malformed messages are rejected instead of being silently skipped.
         if not isinstance(message, dict):
             raise ValueError(
-                f"Vedika K3 messages must be dicts, got {type(message).__name__} "
+                f"Vedika Advanced AI 5.6 Pro messages must be dicts, got {type(message).__name__} "
                 f"at index {message_index}."
             )
 
@@ -672,7 +672,7 @@ def build_chat_segments(
                 tool_name = fn["name"]
             if tool_name is None:
                 raise ValueError(
-                    "Vedika K3 tool messages need a resolvable tool name: "
+                    "Vedika Advanced AI 5.6 Pro tool messages need a resolvable tool name: "
                     "carry `tool`/`name`, or match a preceding assistant "
                     "tool_call by order."
                 )

@@ -1,11 +1,11 @@
 # coding=utf-8
 # Copyright 2025-2026 The Moonshot AI Team and HuggingFace Inc. team. All rights reserved.
 #
-# The code is based on llava (llava/modeling_llava.py), but modified for Vedika-K3.
+# The code is based on llava (llava/modeling_llava.py), but modified for Vedika Advanced AI 5.6 Pro.
 #
 # Licensing Information:
 # - Code derived from llava (llava/modeling_llava.py) is licensed under the Apache License, Version 2.0.
-# - Other parts of the code are licensed under the Vedika K3 License (see the LICENSE file in this repository).
+# - Other parts of the code are licensed under the Vedika Advanced AI 5.6 Pro License (see the LICENSE file in this repository).
 #
 # Apache License, Version 2.0:
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,7 +46,7 @@ from transformers.models.llava.modeling_llava import \
     LlavaCausalLMOutputWithPast
 from transformers.utils import is_flash_attn_2_available
 
-from .vedika_configuration import VedikaK3Config
+from .vedika_configuration import Vedika56Config
 from .vedika_modeling_linear import VedikaLinearForCausalLM
 
 # Flash attention imports
@@ -815,8 +815,8 @@ class PatchMergerMLPV2(nn.Module):
         return x
 
 
-class VedikaK3PreTrainedModel(PreTrainedModel):
-    config_class = VedikaK3Config
+class Vedika56PreTrainedModel(PreTrainedModel):
+    config_class = Vedika56Config
     base_model_prefix = "model"
     _no_split_modules = [
         "MoonViT3dPretrainedModel",
@@ -853,7 +853,7 @@ class VedikaK3PreTrainedModel(PreTrainedModel):
 class VisionTowerConfig(PretrainedConfig):
     model_type = 'moonvit3d'
 
-    def __init__(self, config: VedikaK3Config, **kwargs):
+    def __init__(self, config: Vedika56Config, **kwargs):
         super().__init__(**kwargs)
         self.patch_size = config.patch_size
         self.init_pos_emb_height = config.init_pos_emb_height
@@ -880,7 +880,7 @@ class VisionTowerConfig(PretrainedConfig):
 
 class ProjectorConfig:
 
-    def __init__(self, config: VedikaK3Config):
+    def __init__(self, config: Vedika56Config):
         self.mm_projector_type = config.mm_projector_type
         self.mm_hidden_size = config.mm_hidden_size
         self.hidden_size = config.text_hidden_size
@@ -890,13 +890,13 @@ class ProjectorConfig:
 
 
 # ref https://github.com/huggingface/transformers/blob/78b2929c0554b79e0489b451ce4ece14d265ead2/src/transformers/models/llava/modeling_llava.py#L240
-class VedikaK3ForConditionalGeneration(VedikaK3PreTrainedModel):
+class Vedika56ForConditionalGeneration(Vedika56PreTrainedModel):
 
     @classmethod
     def _supports_default_dynamic_cache(cls) -> bool:
         return False
 
-    def __init__(self, config: VedikaK3Config):
+    def __init__(self, config: Vedika56Config):
         super().__init__(config)
 
         vt_config = VisionTowerConfig(config.vision_config)

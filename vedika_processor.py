@@ -1,4 +1,4 @@
-"""Vedika-K3 processor: wraps vision processor + tokenizer into a single interface.
+"""Vedika Advanced AI 5.6 Pro processor: wraps vision processor + tokenizer into a single interface.
 
 Chat rendering (including XTML tool-result ordering) is handled by the
 tokenizer's Python encoder; this processor adds multimodal media preprocessing.
@@ -12,24 +12,24 @@ from .vedika_media_utils import ensure_media_type
 
 logger = logging.get_logger(__name__)
 
-# ── VedikaK3Processor ───────────────────────────────────────────────────
+# ── Vedika56Processor ───────────────────────────────────────────────────
 
 
-class VedikaK3Processor(ProcessorMixin):
+class Vedika56Processor(ProcessorMixin):
     r"""
-    Constructs a VedikaK3 processor which wraps a VedikaK3 image processor
+    Constructs a Vedika Advanced AI 5.6 Pro processor which wraps a Vedika image processor
     and a tokenizer into a single processor.
 
-    [`VedikaK3Processor`] offers all the functionalities of
-    [`VedikaK3VisionProcessor`] and [`TikTokenTokenizer`].
+    [`Vedika56Processor`] offers all the functionalities of
+    [`Vedika56VisionProcessor`] and [`TikTokenTokenizer`].
 
     Args:
-        image_processor ([`VedikaK3VisionProcessor`], *optional*):
+        image_processor ([`Vedika56VisionProcessor`], *optional*):
             The image processor is a required input.
         tokenizer ([`TikTokenTokenizer`], *optional*):
             The tokenizer is a required input.
         chat_template (`str`, *optional*): Kept for ProcessorMixin
-            compatibility. Vedika K3 chat encoding is implemented in Python by
+            compatibility. Vedika Advanced AI 5.6 Pro chat encoding is implemented in Python by
             the tokenizer.
     """
 
@@ -105,7 +105,7 @@ class VedikaK3Processor(ProcessorMixin):
                  return_tensors: str = "pt",
                  **kwargs) -> BatchFeature:
         """
-        Process multimodal inputs for Vedika-K3 model.
+        Process multimodal inputs for Vedika Advanced AI 5.6 Pro model.
 
         Args:
             messages: List of message dicts with 'role' and 'content' fields.

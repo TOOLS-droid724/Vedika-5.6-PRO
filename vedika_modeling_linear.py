@@ -7,7 +7,7 @@
 #
 # Licensing Information:
 # - Code adapted from DeepSeek-V3 (DeepSeek-V3/modeling_deepseek.py) is licensed under the Apache License, Version 2.0.
-# - Other parts of the code are licensed under the Vedika K3 License (see the LICENSE file in this repository).
+# - Other parts of the code are licensed under the Vedika Advanced AI 5.6 Pro License (see the LICENSE file in this repository).
 #
 # Apache License, Version 2.0:
 # Licensed under the Apache License, Version 2.0 (the "License");
