@@ -1,4 +1,4 @@
-"""Kimi K3 XTML encoding helpers.
+"""Vedika K3 XTML encoding helpers.
 
 This module keeps chat rendering in Python.
 Callers that need token IDs should consume ``EncodeSegment`` objects directly:
@@ -16,7 +16,7 @@ OPEN_TOKEN = "<|open|>"
 CLOSE_TOKEN = "<|close|>"
 SEP_TOKEN = "<|sep|>"
 END_OF_MSG_TOKEN = "<|end_of_msg|>"
-IMAGE_PLACEHOLDER = "<|kimi_image_placeholder|>"
+IMAGE_PLACEHOLDER = "<|vedika_image_placeholder|>"
 
 _VALID_THINKING_EFFORTS = {"low", "high", "max"}
 
@@ -299,7 +299,7 @@ def normalize_tool_arguments(
         except ValueError:
             return [], arguments
     raise TypeError(
-        "Kimi K3 tool call arguments must be a dict or a JSON object string."
+        "Vedika K3 tool call arguments must be a dict or a JSON object string."
     )
 
 
@@ -636,7 +636,7 @@ def build_chat_segments(
         # Malformed messages are rejected instead of being silently skipped.
         if not isinstance(message, dict):
             raise ValueError(
-                f"Kimi K3 messages must be dicts, got {type(message).__name__} "
+                f"Vedika K3 messages must be dicts, got {type(message).__name__} "
                 f"at index {message_index}."
             )
 
@@ -672,7 +672,7 @@ def build_chat_segments(
                 tool_name = fn["name"]
             if tool_name is None:
                 raise ValueError(
-                    "Kimi K3 tool messages need a resolvable tool name: "
+                    "Vedika K3 tool messages need a resolvable tool name: "
                     "carry `tool`/`name`, or match a preceding assistant "
                     "tool_call by order."
                 )

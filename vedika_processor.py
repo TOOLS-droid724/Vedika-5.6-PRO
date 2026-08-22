@@ -1,4 +1,4 @@
-"""Kimi-K3 processor: wraps vision processor + tokenizer into a single interface.
+"""Vedika-K3 processor: wraps vision processor + tokenizer into a single interface.
 
 Chat rendering (including XTML tool-result ordering) is handled by the
 tokenizer's Python encoder; this processor adds multimodal media preprocessing.
@@ -8,28 +8,28 @@ from transformers.feature_extraction_utils import BatchFeature
 from transformers.processing_utils import ProcessorMixin
 from transformers.utils import logging
 
-from .media_utils import ensure_media_type
+from .vedika_media_utils import ensure_media_type
 
 logger = logging.get_logger(__name__)
 
-# ── KimiK3Processor ───────────────────────────────────────────────────
+# ── VedikaK3Processor ───────────────────────────────────────────────────
 
 
-class KimiK3Processor(ProcessorMixin):
+class VedikaK3Processor(ProcessorMixin):
     r"""
-    Constructs a KimiK3 processor which wraps a KimiK3 image processor
+    Constructs a VedikaK3 processor which wraps a VedikaK3 image processor
     and a tokenizer into a single processor.
 
-    [`KimiK3Processor`] offers all the functionalities of
-    [`KimiK3VisionProcessor`] and [`TikTokenTokenizer`].
+    [`VedikaK3Processor`] offers all the functionalities of
+    [`VedikaK3VisionProcessor`] and [`TikTokenTokenizer`].
 
     Args:
-        image_processor ([`KimiK3VisionProcessor`], *optional*):
+        image_processor ([`VedikaK3VisionProcessor`], *optional*):
             The image processor is a required input.
         tokenizer ([`TikTokenTokenizer`], *optional*):
             The tokenizer is a required input.
         chat_template (`str`, *optional*): Kept for ProcessorMixin
-            compatibility. Kimi K3 chat encoding is implemented in Python by
+            compatibility. Vedika K3 chat encoding is implemented in Python by
             the tokenizer.
     """
 
@@ -49,7 +49,7 @@ class KimiK3Processor(ProcessorMixin):
                          tokenizer,
                          chat_template=chat_template)
         self.media_processor = image_processor
-        self.image_placeholder = "<|kimi_image_placeholder|>"
+        self.image_placeholder = "<|vedika_image_placeholder|>"
 
     # ── Media preprocessing ────────────────────────────────────────────
 
@@ -105,7 +105,7 @@ class KimiK3Processor(ProcessorMixin):
                  return_tensors: str = "pt",
                  **kwargs) -> BatchFeature:
         """
-        Process multimodal inputs for Kimi-K3 model.
+        Process multimodal inputs for Vedika-K3 model.
 
         Args:
             messages: List of message dicts with 'role' and 'content' fields.
