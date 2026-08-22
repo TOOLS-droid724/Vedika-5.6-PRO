@@ -1,6 +1,6 @@
-"""Hugging Face custom pipeline for Kimi-K3 model.
+"""Hugging Face custom pipeline for Vedika-advanced-AI_5.6 model.
 
-This module provides a seamless interface to load and execute the Kimi-K3 model
+This module provides a seamless interface to load and execute the Vedika-advanced-AI_5.6 model
 using the standard Hugging Face pipeline API.
 """
 
@@ -12,11 +12,11 @@ from transformers.image_utils import ImageInput
 from transformers.processing_utils import BatchFeature
 
 
-class KimiK3Pipeline(Pipeline):
-    """Pipeline for Kimi-K3 vision-language model.
+class VedikaAdvancedAIPipeline(Pipeline):
+    """Pipeline for Vedika-advanced-AI_5.6 vision-language model.
     
     This pipeline handles multimodal inputs (text + images) and generates
-    text responses using the Kimi-K3 model.
+    text responses using the Vedika-advanced-AI_5.6 model.
     """
     
     def __init__(self, *args, **kwargs):
@@ -139,12 +139,12 @@ class KimiK3Pipeline(Pipeline):
         return {"generated_text": response}
 
 
-def load_kimi_k3_pipeline(
+def load_vedika_advanced_ai_pipeline(
     model_path: str,
     device: Optional[Union[str, int]] = None,
     **pipeline_kwargs
-) -> KimiK3Pipeline:
-    """Load the Kimi-K3 model as a Hugging Face pipeline.
+) -> VedikaAdvancedAIPipeline:
+    """Load the Vedika-advanced-AI_5.6 model as a Hugging Face pipeline.
     
     Args:
         model_path: Path to the model directory or Hugging Face model ID
@@ -152,7 +152,7 @@ def load_kimi_k3_pipeline(
         **pipeline_kwargs: Additional arguments passed to the pipeline
         
     Returns:
-        Configured KimiK3Pipeline instance
+        Configured VedikaAdvancedAIPipeline instance
     """
     from transformers import AutoModelForCausalLM, AutoProcessor
     
@@ -191,7 +191,7 @@ def load_kimi_k3_pipeline(
             processor = None
     
     # Create the pipeline
-    pipeline = KimiK3Pipeline(
+    pipeline = VedikaAdvancedAIPipeline(
         model=model,
         tokenizer=getattr(processor, "tokenizer", None),
         image_processor=getattr(processor, "image_processor", None),
@@ -206,7 +206,7 @@ def load_kimi_k3_pipeline(
 # Example usage:
 if __name__ == "__main__":
     # Usage example:
-    # pipeline = load_kimi_k3_pipeline("./path/to/model")
+    # pipeline = load_vedika_advanced_ai_pipeline("./path/to/model")
     # result = pipeline("Describe this image:", images=[image_path])
     # print(result["generated_text"])
     pass

@@ -2,45 +2,48 @@
 # Compiled and build artifacts
 *.pyc
 __pycache__/
-*.o
-*.obj
-*.so
-*.dll
-*.exe
-*.class
-*.out
 
 # Dependencies
 .venv/
 venv/
-.env
-.env.local
-.env.*
+pip-tools/
 
 # Logs and temp files
 *.log
 *.tmp
 *.swp
 
+# Environment
+.env
+.env.local
+.env.*
+
 # Editors
 .vscode/
 .idea/
 
-# Coverage reports
+# Coverage
+.coverage
 coverage/
 htmlcov/
-.coverage
 
-# Distribution / packaging
+# Python specific
+*.pyo
+*.pyd
+*.so
+*.egg-info/
 dist/
 build/
-*.egg-info/
+*.egg
 
-# Testing
-.pytest_cache/
-.mypy_cache/
+# Backup files
+*~
+*.bak
+*.orig
 
-# OS generated files
+# macOS
 .DS_Store
+
+# Windows
 Thumbs.db
 ```
