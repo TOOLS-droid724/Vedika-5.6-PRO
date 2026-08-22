@@ -1,11 +1,11 @@
 # coding=utf-8
 # Copyright 2025-2026 The Moonshot AI Team and HuggingFace Inc. team. All rights reserved.
 #
-# The code is based on llava (llava/modeling_llava.py), but modified for Kimi-K3.
+# The code is based on llava (llava/modeling_llava.py), but modified for Vedika-K3.
 #
 # Licensing Information:
 # - Code derived from llava (llava/modeling_llava.py) is licensed under the Apache License, Version 2.0.
-# - Other parts of the code are licensed under the Kimi K3 License (see the LICENSE file in this repository).
+# - Other parts of the code are licensed under the Vedika K3 License (see the LICENSE file in this repository).
 #
 # Apache License, Version 2.0:
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,8 +46,8 @@ from transformers.models.llava.modeling_llava import \
     LlavaCausalLMOutputWithPast
 from transformers.utils import is_flash_attn_2_available
 
-from .vedika_configuration_kimi_k3 import KimiK3Config
-from .modeling_kimi_linear import KimiLinearForCausalLM
+from .vedika_configuration import VedikaK3Config
+from .vedika_modeling_linear import VedikaLinearForCausalLM
 
 # Flash attention imports
 if is_flash_attn_2_available():
@@ -815,13 +815,13 @@ class PatchMergerMLPV2(nn.Module):
         return x
 
 
-class KimiK3PreTrainedModel(PreTrainedModel):
-    config_class = KimiK3Config
+class VedikaK3PreTrainedModel(PreTrainedModel):
+    config_class = VedikaK3Config
     base_model_prefix = "model"
     _no_split_modules = [
         "MoonViT3dPretrainedModel",
         "MoonViTEncoderLayer",
-        "KimiDecoderLayer",
+        "VedikaDecoderLayer",
         "PatchMergerMLP",
         "PatchMergerMLPV2",
     ]
@@ -853,7 +853,7 @@ class KimiK3PreTrainedModel(PreTrainedModel):
 class VisionTowerConfig(PretrainedConfig):
     model_type = 'moonvit3d'
 
-    def __init__(self, config: KimiK3Config, **kwargs):
+    def __init__(self, config: VedikaK3Config, **kwargs):
         super().__init__(**kwargs)
         self.patch_size = config.patch_size
         self.init_pos_emb_height = config.init_pos_emb_height
@@ -880,7 +880,7 @@ class VisionTowerConfig(PretrainedConfig):
 
 class ProjectorConfig:
 
-    def __init__(self, config: KimiK3Config):
+    def __init__(self, config: VedikaK3Config):
         self.mm_projector_type = config.mm_projector_type
         self.mm_hidden_size = config.mm_hidden_size
         self.hidden_size = config.text_hidden_size
@@ -890,13 +890,13 @@ class ProjectorConfig:
 
 
 # ref https://github.com/huggingface/transformers/blob/78b2929c0554b79e0489b451ce4ece14d265ead2/src/transformers/models/llava/modeling_llava.py#L240
-class KimiK3ForConditionalGeneration(KimiK3PreTrainedModel):
+class VedikaK3ForConditionalGeneration(VedikaK3PreTrainedModel):
 
     @classmethod
     def _supports_default_dynamic_cache(cls) -> bool:
         return False
 
-    def __init__(self, config: KimiK3Config):
+    def __init__(self, config: VedikaK3Config):
         super().__init__(config)
 
         vt_config = VisionTowerConfig(config.vision_config)
@@ -916,7 +916,7 @@ class KimiK3ForConditionalGeneration(KimiK3PreTrainedModel):
                 f"Unsupported mm_projector_type: {proj_config.mm_projector_type}"
             )
 
-        self.language_model = KimiLinearForCausalLM(config.text_config)
+        self.language_model = VedikaLinearForCausalLM(config.text_config)
         self.post_init()
 
         if hasattr(self.language_model, 'dtype'):

@@ -3,13 +3,13 @@ from typing import Optional
 from transformers.configuration_utils import PretrainedConfig
 
 
-class KimiLinearConfig(PretrainedConfig):
-    model_type = "kimi_linear"
+class VedikaLinearConfig(PretrainedConfig):
+    model_type = "vedika_linear"
     keys_to_ignore_at_inference = ["past_key_values"]
 
     def __init__(
         self,
-        model_type="kimi_linear",
+        model_type="vedika_linear",
         vocab_size=163840,
         hidden_size=4096,
         head_dim=None,
@@ -156,7 +156,7 @@ class KimiLinearConfig(PretrainedConfig):
         )
 
 
-class KimiK3VisionConfig(PretrainedConfig):
+class VedikaK3VisionConfig(PretrainedConfig):
 
     def __init__(
             self,
@@ -226,11 +226,11 @@ class KimiK3VisionConfig(PretrainedConfig):
         super().__init__(**kwargs)
 
 
-class KimiK3Config(PretrainedConfig):
-    """Kimi-K3 model configuration.
+class VedikaK3Config(PretrainedConfig):
+    """Vedika-K3 model configuration.
 
     Args:
-        text_config (dict | KimiLinearConfig): Configuration for the text model.
+        text_config (dict | VedikaLinearConfig): Configuration for the text model.
         
         Vision Tower Parameters (from MoonViT3dConfig):
             patch_size (int): Patch size for vision tower.
@@ -258,12 +258,12 @@ class KimiK3Config(PretrainedConfig):
             pad_token_id (int): The token ID to use for padding.
     """
 
-    model_type = "kimi_k3"
+    model_type = "vedika_k3"
 
     def __init__(
         self,
-        text_config: dict | KimiLinearConfig = None,
-        vision_config: dict | KimiK3VisionConfig = None,
+        text_config: dict | VedikaLinearConfig = None,
+        vision_config: dict | VedikaK3VisionConfig = None,
         # Other parameters
         ignore_index: int = -100,
         media_placeholder_token_id: int = 163605,
@@ -271,9 +271,9 @@ class KimiK3Config(PretrainedConfig):
         **kwargs,
     ):
         if isinstance(text_config, dict):
-            text_config = KimiLinearConfig(**text_config)
+            text_config = VedikaLinearConfig(**text_config)
         if isinstance(vision_config, dict):
-            vision_config = KimiK3VisionConfig(**vision_config)
+            vision_config = VedikaK3VisionConfig(**vision_config)
         self.text_config = text_config
         self.vision_config = vision_config
         # Other config

@@ -3,11 +3,11 @@
 #
 # The multi-head latent attention, MoE gating and sparse MoE block in this file are
 # adapted from DeepSeek-V3 (DeepSeek-V3/modeling_deepseek.py). They have been
-# extensively modified and extended for the Kimi-Linear architecture.
+# extensively modified and extended for the Vedika-Linear architecture.
 #
 # Licensing Information:
 # - Code adapted from DeepSeek-V3 (DeepSeek-V3/modeling_deepseek.py) is licensed under the Apache License, Version 2.0.
-# - Other parts of the code are licensed under the Kimi K3 License (see the LICENSE file in this repository).
+# - Other parts of the code are licensed under the Vedika K3 License (see the LICENSE file in this repository).
 #
 # Apache License, Version 2.0:
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,7 +52,7 @@ try:
 except ImportError:
     raise ImportError("Plese run `pip install -U fla-core`")
 
-from .vedika_configuration_kimi_k3 import KimiLinearConfig
+from .vedika_configuration import VedikaLinearConfig
 
 assert version.parse(transformers.__version__) >= version.parse("4.56.0"), \
     "Please upgrade transformers to >= 4.56.0"
@@ -85,7 +85,7 @@ class SituAndMul(nn.Module):
 ACT2FN["situ"] = SituAndMul
 
 
-def _get_situ_activation_params(config: KimiLinearConfig):
+def _get_situ_activation_params(config: VedikaLinearConfig):
     beta = getattr(config, "activation_situ_beta", None)
     linear_beta = getattr(config, "activation_situ_linear_beta", None)
     return beta or 1.0, linear_beta
@@ -117,14 +117,14 @@ def pad_input(
     return out.view(batch_size, seq_len, *hidden_states.shape[1:])
 
 
-class KimiDynamicCache:
+class VedikaDynamicCache:
     """
-    Dynamic cache for Kimi model.
+    Dynamic cache for Vedika model.
     Inspired by Qwen3-Next
     """
     is_compileable = False
 
-    def __init__(self, config: KimiLinearConfig):
+    def __init__(self, config: VedikaLinearConfig):
         super().__init__()
         self.config = config
 
@@ -223,7 +223,7 @@ class KimiDynamicCache:
         return self.conv_states[self.last_linear_layer] is not None
 
 
-class KimiRMSNorm(nn.Module):
+class VedikaRMSNorm(nn.Module):
     def __init__(self, hidden_size, eps=1e-6):
         super().__init__()
         self.weight = nn.Parameter(torch.ones(hidden_size))
@@ -236,11 +236,11 @@ class KimiRMSNorm(nn.Module):
         return self.weight * x.to(dtype)
 
 
-ALL_LAYERNORM_LAYERS.append(KimiRMSNorm)
+ALL_LAYERNORM_LAYERS.append(VedikaRMSNorm)
 
 
-class KimiBlockSparseMLP(nn.Module):
-    def __init__(self, config: KimiLinearConfig, hidden_size=None, intermediate_size=None):
+class VedikaBlockSparseMLP(nn.Module):
+    def __init__(self, config: VedikaLinearConfig, hidden_size=None, intermediate_size=None):
         super().__init__()
         self.config = config
         self.ffn_dim = config.intermediate_size if intermediate_size is None else intermediate_size
@@ -270,8 +270,8 @@ class KimiBlockSparseMLP(nn.Module):
         return current_hidden_states
 
 
-class KimiMLP(nn.Module):
-    def __init__(self, config: KimiLinearConfig, hidden_size=None, intermediate_size=None):
+class VedikaMLP(nn.Module):
+    def __init__(self, config: VedikaLinearConfig, hidden_size=None, intermediate_size=None):
         super().__init__()
         self.config = config
         self.hidden_size = config.hidden_size if hidden_size is None else hidden_size
@@ -332,12 +332,12 @@ def eager_attention_forward(
     return out, probs
 
 
-class KimiMLAAttention(nn.Module):
+class VedikaMLAAttention(nn.Module):
     """
     Multi-Latent Attention adapted from deepseek-v3
     """
 
-    def __init__(self, config: KimiLinearConfig, layer_idx: int):
+    def __init__(self, config: VedikaLinearConfig, layer_idx: int):
         nn.Module.__init__(self)
         self.config = config
         self.layer_idx = layer_idx
@@ -359,13 +359,13 @@ class KimiMLAAttention(nn.Module):
             self.scaling = self.q_head_dim ** (-0.5)
         except Exception as e:
             raise ValueError(
-                f"Kimi MLA config is not found or not properly formatted: {e}")
+                f"Vedika MLA config is not found or not properly formatted: {e}")
 
         if self.q_lora_rank is not None:
             self.q_a_proj = nn.Linear(
                 self.hidden_size, self.q_lora_rank, bias=False,
             )
-            self.q_a_layernorm = KimiRMSNorm(self.q_lora_rank)
+            self.q_a_layernorm = VedikaRMSNorm(self.q_lora_rank)
             self.q_b_proj = nn.Linear(
                 self.q_lora_rank,
                 self.num_heads * self.q_head_dim,
@@ -380,7 +380,7 @@ class KimiMLAAttention(nn.Module):
             self.kv_lora_rank + self.qk_rope_head_dim,
             bias=False,
         )
-        self.kv_a_layernorm = KimiRMSNorm(self.kv_lora_rank)
+        self.kv_a_layernorm = VedikaRMSNorm(self.kv_lora_rank)
         self.kv_b_proj = nn.Linear(
             self.kv_lora_rank,
             self.num_heads
@@ -474,8 +474,8 @@ class KimiMLAAttention(nn.Module):
         return attn_output
 
 
-class KimiDeltaAttention(nn.Module):
-    def __init__(self, config: KimiLinearConfig, layer_idx: int):
+class VedikaDeltaAttention(nn.Module):
+    def __init__(self, config: VedikaLinearConfig, layer_idx: int):
         super().__init__()
         self.config = config
         self.mode = "chunk"
@@ -544,7 +544,7 @@ class KimiDeltaAttention(nn.Module):
         self,
         hidden_states: torch.Tensor,
         attention_mask: torch.Tensor | None = None,
-        cache_params: KimiDynamicCache | None = None,
+        cache_params: VedikaDynamicCache | None = None,
         **kwargs: Unpack[dict],
     ) -> tuple[torch.Tensor, torch.Tensor | None, Cache | None]:
         if attention_mask is not None:
@@ -663,7 +663,7 @@ class KimiDeltaAttention(nn.Module):
         return o
 
 
-class KimiMoEGate(nn.Module):
+class VedikaMoEGate(nn.Module):
     """
     MoEGate adapted from Deepseek-V3.
     Parameter correspondences:
@@ -673,7 +673,7 @@ class KimiMoEGate(nn.Module):
         moe_router_activation_func -> scoring_func
     """
 
-    def __init__(self, config: KimiLinearConfig):
+    def __init__(self, config: VedikaLinearConfig):
         super().__init__()
         self.config = config
         self.top_k = config.num_experts_per_token
@@ -759,13 +759,13 @@ class KimiMoEGate(nn.Module):
         return topk_idx, topk_weight
 
 
-class KimiSparseMoeBlock(nn.Module):
+class VedikaSparseMoeBlock(nn.Module):
     """
     Adapted from Deepseek-V3's MOE implementation
-    The namings are consistent with Kimi's version.
+    The namings are consistent with Vedika's version.
     """
 
-    def __init__(self, config: KimiLinearConfig):
+    def __init__(self, config: VedikaLinearConfig):
         super().__init__()
         self.config = config
         self.hidden_dim = config.hidden_size
@@ -785,7 +785,7 @@ class KimiSparseMoeBlock(nn.Module):
         self.ep_rank = 0
         self.experts = nn.ModuleList(
             [
-                KimiBlockSparseMLP(
+                VedikaBlockSparseMLP(
                     config,
                     hidden_size=self.moe_hidden_size,
                     intermediate_size=config.moe_intermediate_size,
@@ -793,10 +793,10 @@ class KimiSparseMoeBlock(nn.Module):
                 for _ in range(config.num_experts)
             ],
         )
-        self.gate = KimiMoEGate(config)
+        self.gate = VedikaMoEGate(config)
         if config.num_shared_experts is not None:
             intermediate_size = config.moe_intermediate_size * config.num_shared_experts
-            self.shared_experts = KimiMLP(
+            self.shared_experts = VedikaMLP(
                 config=config, intermediate_size=intermediate_size,
             )
 
@@ -808,7 +808,7 @@ class KimiSparseMoeBlock(nn.Module):
                 self.moe_hidden_size, config.hidden_size, bias=False,
             )
             if self.latent_moe_use_norm:
-                self.routed_expert_norm = KimiRMSNorm(
+                self.routed_expert_norm = VedikaRMSNorm(
                     self.moe_hidden_size, eps=config.rms_norm_eps,
                 )
 
@@ -824,7 +824,7 @@ class KimiSparseMoeBlock(nn.Module):
         if not self.training:
             y = self.moe_infer(hidden_states, topk_idx, topk_weight)
         else:
-            raise NotImplementedError("Training mode is not supported in KimiSparseMoeBlock")
+            raise NotImplementedError("Training mode is not supported in VedikaSparseMoeBlock")
 
         if self.use_latent_moe:
             if self.latent_moe_use_norm:
@@ -874,19 +874,19 @@ class KimiSparseMoeBlock(nn.Module):
         return final_out
 
 
-class KimiDecoderLayer(nn.Module):
-    def __init__(self, config: KimiLinearConfig, layer_idx: int):
+class VedikaDecoderLayer(nn.Module):
+    def __init__(self, config: VedikaLinearConfig, layer_idx: int):
         super().__init__()
         self.hidden_size = config.hidden_size
         self.config = config
         self.layer_idx = layer_idx
         if config.is_kda_layer(layer_idx):
             self.is_linear_attn = True
-            self.self_attn = KimiDeltaAttention(
+            self.self_attn = VedikaDeltaAttention(
                 config=config, layer_idx=layer_idx)
         elif config.is_mla:
             self.is_linear_attn = False
-            self.self_attn = KimiMLAAttention(
+            self.self_attn = VedikaMLAAttention(
                 config=config, layer_idx=layer_idx)
         else:
             raise NotImplementedError
@@ -895,21 +895,21 @@ class KimiDecoderLayer(nn.Module):
             and layer_idx >= config.first_k_dense_replace
             and layer_idx % getattr(config, "moe_layer_freq", 1) == 0
         ):
-            self.block_sparse_moe = KimiSparseMoeBlock(config)
+            self.block_sparse_moe = VedikaSparseMoeBlock(config)
         else:
-            self.mlp = KimiMLP(config)
-        self.input_layernorm = KimiRMSNorm(
+            self.mlp = VedikaMLP(config)
+        self.input_layernorm = VedikaRMSNorm(
             config.hidden_size, eps=config.rms_norm_eps)
-        self.post_attention_layernorm = KimiRMSNorm(
+        self.post_attention_layernorm = VedikaRMSNorm(
             config.hidden_size, eps=config.rms_norm_eps)
 
         # Attention residual
         self.use_attn_residuals = getattr(config, "attn_res_block_size", None) is not None
         if self.use_attn_residuals:
             self.attn_res_block_size = config.attn_res_block_size
-            self.self_attention_res_norm = KimiRMSNorm(
+            self.self_attention_res_norm = VedikaRMSNorm(
                 config.hidden_size, eps=config.rms_norm_eps)
-            self.mlp_res_norm = KimiRMSNorm(
+            self.mlp_res_norm = VedikaRMSNorm(
                 config.hidden_size, eps=config.rms_norm_eps)
             self.self_attention_res_proj = nn.Linear(
                 config.hidden_size, 1, bias=False)
@@ -1046,17 +1046,17 @@ class KimiDecoderLayer(nn.Module):
         return prefix_sum, block_residual
 
 
-class KimiPreTrainedModel(PreTrainedModel):
-    config_class = KimiLinearConfig
+class VedikaPreTrainedModel(PreTrainedModel):
+    config_class = VedikaLinearConfig
     base_model_prefix = "model"
     supports_gradient_checkpointing = True
-    _no_split_modules = ["KimiDecoderLayer"]
+    _no_split_modules = ["VedikaDecoderLayer"]
     _skip_keys_device_placement = "past_key_values"
     _supports_flash_attn_2 = True
     _can_record_outputs = {
-        "router_logits": OutputRecorder(KimiBlockSparseMLP, index=1),
-        "hidden_states": KimiDecoderLayer,
-        "attentions": KimiMLAAttention,
+        "router_logits": OutputRecorder(VedikaBlockSparseMLP, index=1),
+        "hidden_states": VedikaDecoderLayer,
+        "attentions": VedikaMLAAttention,
     }
     _is_stateful = True
 
@@ -1087,22 +1087,22 @@ def _apply_attn_res(prefix_sum, block_residual, proj, norm):
     hidden_states = torch.matmul(probs, v_float).squeeze(1)
     return hidden_states.to(v.dtype)
 
-class KimiLinearModel(KimiPreTrainedModel):
-    def __init__(self, config: KimiLinearConfig):
+class VedikaLinearModel(VedikaPreTrainedModel):
+    def __init__(self, config: VedikaLinearConfig):
         super().__init__(config)
         self.padding_idx = config.pad_token_id
         self.vocab_size = config.vocab_size
 
         self.embed_tokens = nn.Embedding(
             config.vocab_size, config.hidden_size, self.padding_idx)
-        self.layers = nn.ModuleList([KimiDecoderLayer(
+        self.layers = nn.ModuleList([VedikaDecoderLayer(
             config, layer_idx) for layer_idx in range(config.num_hidden_layers)])
-        self.norm = KimiRMSNorm(
+        self.norm = VedikaRMSNorm(
             config.hidden_size, eps=config.rms_norm_eps)
 
         self.use_attn_residuals = getattr(config, "attn_res_block_size", None) is not None
         if self.use_attn_residuals:
-            self.output_attn_res_norm = KimiRMSNorm(
+            self.output_attn_res_norm = VedikaRMSNorm(
                 config.hidden_size, eps=config.rms_norm_eps)
             self.output_attn_res_proj = nn.Linear(
                 config.hidden_size, 1, bias=False)
@@ -1158,7 +1158,7 @@ class KimiLinearModel(KimiPreTrainedModel):
             inputs_embeds = self.embed_tokens(input_ids)
 
         if use_cache and past_key_values is None:
-            past_key_values = KimiDynamicCache(config=self.config)
+            past_key_values = VedikaDynamicCache(config=self.config)
 
         if cache_position is None:
             past_seen_tokens = past_key_values.get_seq_length(
@@ -1183,7 +1183,7 @@ class KimiLinearModel(KimiPreTrainedModel):
 
         hidden_states = inputs_embeds
         if past_key_values is not None:
-            assert isinstance(past_key_values, KimiDynamicCache)
+            assert isinstance(past_key_values, VedikaDynamicCache)
 
         block_residual = None
         if self.use_attn_residuals:
@@ -1233,7 +1233,7 @@ class KimiLinearModel(KimiPreTrainedModel):
         ).view(batch_size, seq_len, hidden_size)
 
 
-class KimiLinearForCausalLM(KimiPreTrainedModel, GenerationMixin):
+class VedikaLinearForCausalLM(VedikaPreTrainedModel, GenerationMixin):
     @classmethod
     def _supports_default_dynamic_cache(cls) -> bool:
         return False
@@ -1242,7 +1242,7 @@ class KimiLinearForCausalLM(KimiPreTrainedModel, GenerationMixin):
 
     def __init__(self, config):
         super().__init__(config)
-        self.model = KimiLinearModel(config)
+        self.model = VedikaLinearModel(config)
         self.vocab_size = config.vocab_size
         self.lm_head = nn.Linear(
             config.hidden_size, config.vocab_size, bias=False)

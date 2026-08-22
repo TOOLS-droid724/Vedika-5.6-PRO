@@ -1,4 +1,4 @@
-"""Image processor class for Kimi-K3.
+"""Image processor class for Vedika-K3.
 """
 
 import json
@@ -11,13 +11,13 @@ from transformers.image_processing_utils import (BaseImageProcessor,
                                                  BatchFeature)
 from transformers.utils import TensorType
 
-from .media_utils import (MediaInput, TransparentBgConfig, _to_tensor,
+from .vedika_media_utils import (MediaInput, TransparentBgConfig, _to_tensor,
                           ensure_media_type, image_to_np, navit_patchify,
                           navit_resize_image, normalize)
 
 
-class KimiK3VisionProcessor(BaseImageProcessor):
-    model_type = "kimi_k3"
+class VedikaK3VisionProcessor(BaseImageProcessor):
+    model_type = "vedika_k3"
 
     def __init__(
         self,
@@ -156,7 +156,7 @@ class KimiK3VisionProcessor(BaseImageProcessor):
         return BatchFeature(data=data, tensor_type=return_tensors)
 
     def __repr__(self):
-        return f"KimiK3VisionProcessor(media_proc_cfg={self.media_proc_cfg})"
+        return f"VedikaK3VisionProcessor(media_proc_cfg={self.media_proc_cfg})"
 
     def to_dict(self) -> Dict[str, Any]:
         output = super().to_dict()
