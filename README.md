@@ -132,6 +132,100 @@ This model is released under the Vedika 5.6 Pro License. Please refer to the LIC
 - **Hugging Face**: [Veda Labs](https://huggingface.co/vedalabs)
 
 
+
+## 7. Hugging Face Pipeline Usage Example
+
+To load and run the Vedika-advanced-AI_5.6 model using the standard Hugging Face `pipeline` interface with `trust_remote_code=True`, follow the examples below.
+
+### Basic Text Generation
+
+```python
+from transformers import pipeline
+
+# Load the custom pipeline
+pipe = pipeline(
+    "vedika-advanced-ai-5-6",
+    model="vedalabs/vedika-5.6-pro",
+    trust_remote_code=True,
+    device_map="auto"  # Automatically use GPU if available
+)
+
+# Run inference with text only
+result = pipe("Explain quantum computing in simple terms.")
+print(result[0]["generated_text"])
+```
+
+### Multimodal Input (Text + Image)
+
+```python
+from transformers import pipeline
+
+# Load the pipeline (same as above)
+pipe = pipeline(
+    "vedika-advanced-ai-5-6",
+    model="vedalabs/vedika-5.6-pro",
+    trust_remote_code=True,
+    device_map="auto"
+)
+
+# Run inference with both text and image
+result = pipe(
+    {"text": "Describe what you see in this image:", "images": ["path/to/your/image.jpg"]},
+    max_new_tokens=512,
+    temperature=0.7
+)
+print(result[0]["generated_text"])
+```
+
+### Using the Custom Loader Function
+
+Alternatively, you can use the dedicated loader function from `pipeline.py`:
+
+```python
+from pipeline import load_vedika_advanced_ai_pipeline
+
+# Load the model using the custom loader
+pipe = load_vedika_advanced_ai_pipeline(
+    model_path="vedalabs/vedika-5.6-pro",
+    device="cuda"  # or "cpu"
+)
+
+# Generate a response
+output = pipe(
+    "What are the main themes in this story?",
+    max_new_tokens=1024,
+    do_sample=True,
+    top_p=0.9
+)
+print(output["generated_text"])
+```
+
+### Advanced Generation Parameters
+
+You can customize generation behavior with various parameters:
+
+```python
+from transformers import pipeline
+
+pipe = pipeline(
+    "vedika-advanced-ai-5-6",
+    model="vedalabs/vedika-5.6-pro",
+    trust_remote_code=True
+)
+
+result = pipe(
+    "Solve this math problem: 2x + 5 = 15",
+    max_new_tokens=2048,      # Maximum tokens to generate
+    temperature=0.3,          # Lower temperature for more deterministic output
+    top_p=0.95,               # Nucleus sampling
+    do_sample=True,           # Enable sampling
+)
+print(result[0]["generated_text"])
+```
+
+> **Note:** The first time you run the pipeline, it will download the necessary model files and custom code modules (`vedika_*.py`). Make sure you have a stable internet connection and sufficient disk space.
+
+
 ## Citation
 
 If you use Vedika 5.6 Pro in your research, please cite:
