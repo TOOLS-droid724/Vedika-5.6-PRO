@@ -32,7 +32,7 @@
     "config_type": "media_proc.processors.moonvit.MoonViTMediaProcessorConfig"
   },
   "auto_map": {
-    "AutoProcessor": "kimi_k3_processor.KimiK3Processor",
-    "AutoImageProcessor": "kimi_k3_vision_processing.KimiK3VisionProcessor"
+    "AutoProcessor": "vedika_kimi_k3_processor.KimiK3Processor",
+    "AutoImageProcessor": "vedika_kimi_k3_vision_processing.KimiK3VisionProcessor"
   }
 }

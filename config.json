@@ -3,9 +3,9 @@
     "KimiK3ForConditionalGeneration"
   ],
   "auto_map": {
-    "AutoConfig": "configuration_kimi_k3.KimiK3Config",
-    "AutoModel": "modeling_kimi_k3.KimiK3ForConditionalGeneration",
-    "AutoModelForCausalLM": "modeling_kimi_k3.KimiK3ForConditionalGeneration"
+    "AutoConfig": "vedika_configuration_kimi_k3.KimiK3Config",
+    "AutoModel": "vedika_modeling_kimi_k3.KimiK3ForConditionalGeneration",
+    "AutoModelForCausalLM": "vedika_modeling_kimi_k3.KimiK3ForConditionalGeneration"
   },
   "bos_token_id": 163584,
   "dtype": "bfloat16",
@@ -25,7 +25,7 @@
     ],
     "attn_res_block_size": 12,
     "auto_map": {
-      "AutoConfig": "configuration_kimi_k3.KimiLinearConfig",
+      "AutoConfig": "vedika_configuration_kimi_k3.KimiLinearConfig",
       "AutoModel": "modeling_kimi_linear.KimiLinearModel",
       "AutoModelForCausalLM": "modeling_kimi_linear.KimiLinearForCausalLM"
     },
