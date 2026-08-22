@@ -156,7 +156,7 @@ class VedikaLinearConfig(PretrainedConfig):
         )
 
 
-class VedikaK3VisionConfig(PretrainedConfig):
+class Vedika56VisionConfig(PretrainedConfig):
 
     def __init__(
             self,
@@ -226,8 +226,8 @@ class VedikaK3VisionConfig(PretrainedConfig):
         super().__init__(**kwargs)
 
 
-class VedikaK3Config(PretrainedConfig):
-    """Vedika-K3 model configuration.
+class Vedika56Config(PretrainedConfig):
+    """Vedika Advanced AI 5.6 Pro model configuration.
 
     Args:
         text_config (dict | VedikaLinearConfig): Configuration for the text model.
@@ -258,12 +258,12 @@ class VedikaK3Config(PretrainedConfig):
             pad_token_id (int): The token ID to use for padding.
     """
 
-    model_type = "vedika_k3"
+    model_type = "vedika_5_6"
 
     def __init__(
         self,
         text_config: dict | VedikaLinearConfig = None,
-        vision_config: dict | VedikaK3VisionConfig = None,
+        vision_config: dict | Vedika56VisionConfig = None,
         # Other parameters
         ignore_index: int = -100,
         media_placeholder_token_id: int = 163605,
@@ -273,7 +273,7 @@ class VedikaK3Config(PretrainedConfig):
         if isinstance(text_config, dict):
             text_config = VedikaLinearConfig(**text_config)
         if isinstance(vision_config, dict):
-            vision_config = VedikaK3VisionConfig(**vision_config)
+            vision_config = Vedika56VisionConfig(**vision_config)
         self.text_config = text_config
         self.vision_config = vision_config
         # Other config

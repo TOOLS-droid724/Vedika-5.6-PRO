@@ -1,4 +1,4 @@
-"""Image processor class for Vedika-K3.
+"""Image processor class for Vedika Advanced AI 5.6 Pro.
 """
 
 import json
@@ -16,8 +16,8 @@ from .vedika_media_utils import (MediaInput, TransparentBgConfig, _to_tensor,
                           navit_resize_image, normalize)
 
 
-class VedikaK3VisionProcessor(BaseImageProcessor):
-    model_type = "vedika_k3"
+class Vedika56VisionProcessor(BaseImageProcessor):
+    model_type = "vedika_5_6"
 
     def __init__(
         self,
@@ -52,7 +52,7 @@ class VedikaK3VisionProcessor(BaseImageProcessor):
 
     @classmethod
     def make_image_prompt(cls, width: int, height: int) -> str:
-        """Build the K3 image placeholder with resolution info."""
+        """Build the Vedika image placeholder with resolution info."""
         return (f"<|media_begin|>image {width}x{height}"
                 f"<|media_content|><|media_pad|><|media_end|>")
 
@@ -156,7 +156,7 @@ class VedikaK3VisionProcessor(BaseImageProcessor):
         return BatchFeature(data=data, tensor_type=return_tensors)
 
     def __repr__(self):
-        return f"VedikaK3VisionProcessor(media_proc_cfg={self.media_proc_cfg})"
+        return f"Vedika56VisionProcessor(media_proc_cfg={self.media_proc_cfg})"
 
     def to_dict(self) -> Dict[str, Any]:
         output = super().to_dict()
