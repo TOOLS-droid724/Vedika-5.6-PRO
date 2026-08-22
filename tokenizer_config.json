@@ -150,7 +150,7 @@
   "unk_token": "[UNK]",
   "auto_map": {
     "AutoTokenizer": [
-      "tokenization_kimi.TikTokenTokenizer",
+      "vedika_tokenization_kimi.TikTokenTokenizer",
       null
     ]
   }

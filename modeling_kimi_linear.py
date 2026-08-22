@@ -52,7 +52,7 @@ try:
 except ImportError:
     raise ImportError("Plese run `pip install -U fla-core`")
 
-from .configuration_kimi_k3 import KimiLinearConfig
+from .vedika_configuration_kimi_k3 import KimiLinearConfig
 
 assert version.parse(transformers.__version__) >= version.parse("4.56.0"), \
     "Please upgrade transformers to >= 4.56.0"

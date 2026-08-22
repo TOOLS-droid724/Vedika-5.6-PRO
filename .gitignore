@@ -1,1 +1,49 @@
-Nothing to output - the file changes contain only a LICENSE file modification with no build artifacts, dependencies, or temporary files that need to be ignored.
+```
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+
+# Dependencies
+.venv/
+venv/
+pip-tools/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Editors
+.vscode/
+.idea/
+
+# Coverage
+.coverage
+coverage/
+htmlcov/
+
+# Python specific
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Backup files
+*~
+*.bak
+*.orig
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+```
