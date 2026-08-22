@@ -159,7 +159,7 @@ def load_vedika_advanced_ai_pipeline(
     # Load configuration
     config = AutoConfig.from_pretrained(model_path, trust_remote_code=True)
     
-    # Load the main model
+    # Load the main model (uses vedika_modeling.py internally)
     model = AutoModelForCausalLM.from_pretrained(
         model_path,
         config=config,
@@ -168,14 +168,14 @@ def load_vedika_advanced_ai_pipeline(
         device_map="auto" if device is None else device,
     )
     
-    # Load processor (handles both image processing and tokenization)
+    # Load processor (handles both image processing and tokenization via vedika_processor.py)
     try:
         processor = AutoProcessor.from_pretrained(
             model_path,
             trust_remote_code=True
         )
     except Exception:
-        # Fallback: load tokenizer and image processor separately
+        # Fallback: load tokenizer (vedika_tokenization.py) and image processor separately
         tokenizer = AutoTokenizer.from_pretrained(
             model_path,
             trust_remote_code=True
