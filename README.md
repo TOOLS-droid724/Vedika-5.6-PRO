@@ -135,7 +135,7 @@ This model is released under the Vedika 5.6 Pro License. Please refer to the LIC
 
 ## 7. Hugging Face Pipeline Usage Example
 
-To load and run the Vedika-advanced-AI_5.6 model using the standard Hugging Face `pipeline` interface with `trust_remote_code=True`, follow the examples below.
+To load and run the **Vedika-5.6-PROv1** model using the standard Hugging Face `pipeline` interface with `trust_remote_code=True`, follow the examples below.
 
 ### Basic Text Generation
 
@@ -145,7 +145,7 @@ from transformers import pipeline
 # Load the custom pipeline
 pipe = pipeline(
     "vedika-advanced-ai-5-6",
-    model="vedalabs/vedika-5.6-pro",
+    model="Veda-Labs/Vedika-5.6-PROv1",
     trust_remote_code=True,
     device_map="auto"  # Automatically use GPU if available
 )
@@ -163,7 +163,7 @@ from transformers import pipeline
 # Load the pipeline (same as above)
 pipe = pipeline(
     "vedika-advanced-ai-5-6",
-    model="vedalabs/vedika-5.6-pro",
+    model="Veda-Labs/Vedika-5.6-PROv1",
     trust_remote_code=True,
     device_map="auto"
 )
@@ -186,7 +186,7 @@ from pipeline import load_vedika_advanced_ai_pipeline
 
 # Load the model using the custom loader
 pipe = load_vedika_advanced_ai_pipeline(
-    model_path="vedalabs/vedika-5.6-pro",
+    model_path="Veda-Labs/Vedika-5.6-PROv1",
     device="cuda"  # or "cpu"
 )
 
@@ -209,7 +209,7 @@ from transformers import pipeline
 
 pipe = pipeline(
     "vedika-advanced-ai-5-6",
-    model="vedalabs/vedika-5.6-pro",
+    model="Veda-Labs/Vedika-5.6-PROv1",
     trust_remote_code=True
 )
 
