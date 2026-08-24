@@ -1,19 +1,19 @@
 {
   "architectures": [
-    "KimiK3ForConditionalGeneration"
+    "Vedika56ForConditionalGeneration"
   ],
   "auto_map": {
-    "AutoConfig": "vedika_configuration_kimi_k3.KimiK3Config",
-    "AutoModel": "vedika_modeling_kimi_k3.KimiK3ForConditionalGeneration",
-    "AutoModelForCausalLM": "vedika_modeling_kimi_k3.KimiK3ForConditionalGeneration"
+    "AutoConfig": "vedika_configuration.Vedika56Config",
+    "AutoModel": "vedika_modeling.Vedika56ForConditionalGeneration",
+    "AutoModelForCausalLM": "vedika_modeling.Vedika56ForConditionalGeneration"
   },
   "bos_token_id": 163584,
   "dtype": "bfloat16",
   "eos_token_id": 163586,
   "ignore_index": -100,
-  "image_placeholder": "<|kimi_image_placeholder|>",
+  "image_placeholder": "<|vedika_image_placeholder|>",
   "media_placeholder_token_id": 163605,
-  "model_type": "kimi_k3",
+  "model_type": "vedika",
   "pad_token_id": 163839,
   "text_config": {
     "_name_or_path": "",
@@ -21,13 +21,13 @@
     "activation_situ_linear_beta": 25.0,
     "add_cross_attention": false,
     "architectures": [
-      "KimiLinearForCausalLM"
+      "VedikaLinearForCausalLM"
     ],
     "attn_res_block_size": 12,
     "auto_map": {
-      "AutoConfig": "vedika_configuration_kimi_k3.KimiLinearConfig",
-      "AutoModel": "modeling_kimi_linear.KimiLinearModel",
-      "AutoModelForCausalLM": "modeling_kimi_linear.KimiLinearForCausalLM"
+      "AutoConfig": "vedika_configuration.VedikaLinearConfig",
+      "AutoModel": "vedika_modeling_linear.VedikaLinearModel",
+      "AutoModelForCausalLM": "vedika_modeling_linear.VedikaLinearForCausalLM"
     },
     "bad_words_ids": null,
     "begin_suppress_tokens": null,
@@ -172,7 +172,7 @@
     "min_length": 0,
     "mla_use_nope": true,
     "mla_use_output_gate": true,
-    "model_type": "kimi_linear",
+    "model_type": "vedika_linear",
     "moe_intermediate_size": 3072,
     "moe_layer_freq": 1,
     "moe_renormalize": true,

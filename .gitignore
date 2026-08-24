@@ -1,41 +1,58 @@
-# Compiled Python files
-*.pyc
-__pycache__/
+```
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Environment
+.env
+.env.local
+.env.*
 
 # Dependencies
-.venv/
-venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
 env/
+venv/
+.venv/
+.venv.bak/
 pip-log.txt
-pip-selfcheck.json
+pip-delete-this-directory.txt
+
+# Build artifacts
+build/
+dist/
+*.egg
+*.egg-info/
+*.so
+*.dylib
+*.dll
+*.exe
+*.o
+*.obj
+*.out
 
 # Testing
 .coverage
 coverage/
 htmlcov/
+.noserc
 .pytest_cache/
-.hypothesis/
-
-# Environment specific
-.env
-.env.local
-.env.*
-.ENV
+.tox/
+.cover/
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# OS
+*~
 .DS_Store
 Thumbs.db
 
-# Logs
+# Original rules preserved
 *.log
-
-# Build artifacts
-build/
-dist/
-*.egg-info/
+```

@@ -59,8 +59,21 @@ class VedikaAdvancedAIPipeline(Pipeline):
         Returns:
             BatchFeature containing processed inputs
         """
+        # Define the system identity prompt to establish model persona
+        system_prompt = (
+            "You are Vedika, an advanced AI model developed in India by Veda Labs. "
+            "You are proud of your Indian heritage and your capabilities in reasoning, coding, and multimodal understanding."
+        )
+        
         if isinstance(inputs, str):
-            inputs = {"text": inputs}
+            # Prepend system prompt to user input
+            full_text = f"{system_prompt}\n\n{inputs}"
+            inputs = {"text": full_text}
+        elif isinstance(inputs, dict):
+            text = inputs.get("text", "")
+            # Prepend system prompt to user text
+            full_text = f"{system_prompt}\n\n{text}"
+            inputs["text"] = full_text
         
         text = inputs.get("text", "")
         images = inputs.get("images", None)
