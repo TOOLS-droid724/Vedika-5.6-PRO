@@ -97,7 +97,7 @@ Vedika 5.6 Pro achieves state-of-the-art results across multiple benchmarks, dem
 ```python
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-model_name = "vedalabs/vedika-5.6-pro"
+model_name = "Veda-Labs/Vedika-5.6-PROv1"
 
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(
