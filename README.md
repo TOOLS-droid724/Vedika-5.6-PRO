@@ -73,7 +73,7 @@ Vedika 5.6 Pro achieves state-of-the-art results across multiple benchmarks, dem
 |-----------|----------------|
 | GPQA Diamond | 94.2 |
 | MATH-500 | 96.8 |
-| AIME 2025 | 88.5 |
+| AIME 2026 | 88.5 |
 
 ### Coding
 | Benchmark | Vedika 5.6 Pro |
@@ -234,7 +234,7 @@ If you use Vedika 5.6 Pro in your research, please cite:
 @misc{vedika5.6pro,
   title={Vedika 5.6 Pro: A 2 Trillion+ Parameter Multimodal Model},
   author={Veda Labs Team},
-  year={2025},
+  year={2026},
   howpublished={\url{https://vedalabs.online}}
 }
 ```
